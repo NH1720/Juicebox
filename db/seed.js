@@ -59,8 +59,9 @@ const {
             name VARCHAR(255) UNIQUE NOT NULL
         );
         CREATE TABLE post_tags (
-            "postId" INTEGER REFERENCES UNIQUE posts(id),
-            "tagId" INTEGER REFERENCES UNIQUE tags(id) 
+            "postId" INTEGER REFERENCES posts(id),
+            "tagId" INTEGER REFERENCES tags(id),
+            UNIQUE ("postId", "tagId")
         );
       `);
   
