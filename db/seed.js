@@ -16,6 +16,8 @@ const {
   
       // have to make sure to drop in correct order
       await client.query(`
+        DROP TABLE IF EXISTS post_tags;
+        DROP TABLE IF EXISTS tags;
         DROP TABLE IF EXISTS posts;
         DROP TABLE IF EXISTS users;
       `);
@@ -34,18 +36,26 @@ const {
       await client.query(`
         CREATE TABLE users (
           id SERIAL PRIMARY KEY,
-          username varchar(255) UNIQUE NOT NULL,
-          password varchar(255) NOT NULL,
-          name varchar(255) NOT NULL,
-          location varchar(255) NOT NULL,
+          username VARCHAR(255) UNIQUE NOT NULL,
+          password VARCHAR(255) NOT NULL,
+          name VARCHAR(255) NOT NULL,
+          location VARCHAR(255) NOT NULL,
           active boolean DEFAULT true
         );
         CREATE TABLE posts (
           id SERIAL PRIMARY KEY,
           "authorId" INTEGER REFERENCES users(id),
-          title varchar(255) NOT NULL,
+          title VARCHAR(255) NOT NULL,
           content TEXT NOT NULL,
           active BOOLEAN DEFAULT true
+        );
+        CREATE TABLE tags (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255) UNIQUE NOT NULL
+        );
+        CREATE TABLE post_tags (
+            "postId" INTEGER REFERENCES posts(id) UNIQUE,
+            "tagId" INTEGER REFERENCES tags(id) UNIQUE
         );
       `);
   
